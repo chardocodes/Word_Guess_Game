@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Psychic Game</title>
+
+    <script src="https://code.jquery.com/jquery.js"></script>
 </head>
 
 <body>
@@ -23,43 +25,83 @@
     <p>Your guesses so far: <span id="soFar"></span></p>
 
     <style>
-    
+
     </style>
 
     <script>
 
 
-
         alert("Pick a letter a-z, you have 10 guesses!");
 
-        var letterChoice = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
+        function generateComputerChoice() {
+            var letterChoice = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+            return letterChoice[Math.floor(Math.random() * letterChoice.length)]
+        }
 
         var Wins = 0;
         var Loses = 0;
-        var numberOfGuesses = 10;
+        var numberOfGuesses = 0;
+        var allowedNumberOfGuesses = 10;
+
         var alreadyGuessed = [];
 
+        // initialization
+        var computerChoice = generateComputerChoice();
+        $("#soFar").text(0);
+        $("#Guesses").text(0);
+        $("#Loses").text(0);
+        $("#Wins").text(0);
+
+        //Magical function
 
         document.onkeyup = function (event) {
-
             var userGuess = event.key;
+            console.log($.inArray(userGuess, alreadyGuessed));
+            if ($.inArray(userGuess, alreadyGuessed) != -1) {
+        // this was already guessed
+                return false;
+            }
+            alreadyGuessed.push(userGuess);
+            numberOfGuesses++;
+            $("#soFar").text(numberOfGuesses);
+            $("#Guesses").text(allowedNumberOfGuesses - numberOfGuesses);
             console.log("userGuess: ", userGuess);
-            var computerChoice = letterChoice[Math.floor(Math.random() * letterChoice.length)];
-            console.log(Math.floor(Math.random() * letterChoice.length));
             console.log("computerChoice: ", computerChoice);
+            if (userGuess == computerChoice) {
+        // Increment wins
+                Wins++;
+        // Regenerate Answer // start game two
+                computerChoice = generateComputerChoice();
+                $("#Wins").text(Wins);
+                return true;
+            }
+            if (numberOfGuesses == allowedNumberOfGuesses) {
 
-            
+        // Increment loses
+                Loses++;
+                numberOfGuesses = 0;
+
+        // Regenerate Answer // start game two
+                computerChoice = generateComputerChoice();
+                $("#Loses").text(Loses);
+                return true;
+            }
+
+
+
         }
 
-        let userGuess = function ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"] {
-            return (userGuess.length);
-        }
-        Math.floor(Math.random() * userGuess.length)];
 
-        for (i = 0; i < 10; i++) {
-            console.log(i + 1);
-        }
+
+
+
+        // var possibleAnswers = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+        // Math.floor(Math.random() * userGuess.length)];
+
+      
+        // 
 
 
 
